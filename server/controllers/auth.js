@@ -4,7 +4,7 @@ const {sign} =require('jsonwebtoken');
 
 exports.isAuth = (req,res) => {
     const { login,password } = req.body;
-    const userAuth = `SELECT*FROM online_store.users WHERE login='${login}'`;
+    const userAuth = `SELECT*FROM store.users WHERE login='${login}'`;
     db.query(userAuth ,(err, result)=>{
         result.length !==0 ? bcrypt.compare(password, result[0].password).then((match) => {
         if (!match) res.status(400).json({ error: "Błędny login lub hasło." });

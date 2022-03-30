@@ -1,9 +1,8 @@
 const express = require('express');
 const app = express();
-const PORT = 8080;
 const cors = require('cors');
 require('dotenv').config();
-const port = 8000;
+const port = 3001;
 const stripe = require('stripe')('sk_test_51K6AERJqh6ddLpQD1dC09QeQh65lSkueXdgBC9l3YMetjtXF9WlpJF1VhgqTHjQwLsO1Bxnp6zlU4ontFeT6aVHI00HBQaHRLN');
 const { v4: uuidv4 } = require('uuid');
 uuidv4();
@@ -18,7 +17,11 @@ const restartPassword = require('./routes/ResetPassword');
 app.use(cors());
 app.use(express.json());
 
-// Routers
+// Routes
+app.get('/', function(req, res) {
+  res.send('Hello World!');
+});
+
 app.use('/orders', orders);
 app.use('/products', products);
 app.use('/users', users);
@@ -88,7 +91,6 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}!`)
+app.listen(port, function() {
+  console.log('Example app listening on port 3000!');
 });
-

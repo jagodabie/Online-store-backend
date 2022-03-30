@@ -5,13 +5,13 @@ const db = mysql.createConnection({
     password: "QAZ123qaz.", 
     host: "127.0.0.1",
     port:3306,
-    database: "online_store",
+    database: "store",
     insecureAuth : true,
     multipleStatements: true,
 })
 
 exports.getOrders =  (req, res) => {
-      db.query('SELECT*FROM online_store.orders',(err, result)=>{
+      db.query('SELECT*FROM store.orders',(err, result)=>{
       if (err) console.log(err);
        result.forEach(item =>{
        item.productList = JSON.parse(item.products_list)
@@ -23,7 +23,7 @@ exports.getOrders =  (req, res) => {
 
 exports.getOrder = (req,res)=>{
     const id =req.params.id;
-    db.query( `SELECT*FROM online_store.orders WHERE id='${id}'` ,(err, result)=>{
+    db.query( `SELECT*FROM store.orders WHERE id='${id}'` ,(err, result)=>{
         if (err) res.status(404).send({res: 'Nie odnaleziono zamówienia'});
         res.json({result})
     })
@@ -47,7 +47,7 @@ exports.createOrder =(req,res)=>{
     };
    
     db.query( 
-        `INSERT INTO online_store.orders (number,total_price,products_list,userIn,status,name,surname,email,street,street_number,flat_number,postal_code,locality) VALUES ('${number}','${totalPrice}','${productsList}','${user}','${status}','${name}','${surname}','${email}','${adress.street}','${adress.number}','${adress.flatNumber}','${adress.postalCode}','${adress.locality}')`
+        `INSERT INTO store.orders (number,total_price,products_list,userIn,status,name,surname,email,street,street_number,flat_number,postal_code,locality) VALUES ('${number}','${totalPrice}','${productsList}','${user}','${status}','${name}','${surname}','${email}','${adress.street}','${adress.number}','${adress.flatNumber}','${adress.postalCode}','${adress.locality}')`
         ,(err, result)=>{
         if (err) console.log(err);
         res.json({result})
@@ -61,7 +61,7 @@ exports.updateOrder = (req,res)=>{
     const user = req.body.user;
     const status = req.body.status;
     db.query(
-        `UPDATE online_store.orders SET number='${number}',total_price=${totalPrice}',products_list='${productsList}',user='${user}',status='${status}') VALUES ' ,,'${user}','${status}')` 
+        `UPDATE store.orders SET number='${number}',total_price=${totalPrice}',products_list='${productsList}',user='${user}',status='${status}') VALUES ' ,,'${user}','${status}')` 
        ,(err, result)=>{
         if (err) console.log(err);
         res.json({result})
@@ -70,7 +70,7 @@ exports.updateOrder = (req,res)=>{
 
 exports.deleteOrder = (req,res)=>{
     const id =req.params.id;
-    db.query(`DELETE FROM online_store.orders WHERE id='${id}'`,(err, result)=>{
+    db.query(`DELETE FROM store.orders WHERE id='${id}'`,(err, result)=>{
         if (err) res.status(404).send({res: 'Użytkownik nie został znaleziony'});
         res.json({result})
     })

@@ -9,7 +9,7 @@ const mg = mailgun({apiKey: '4caad3d4a952da3f13975cc4edc04355-7005f37e-a5c4e5ac'
 exports.forgotPassword = (req,res) => {
     const { email } = req.body
 
-    const userAuth = `SELECT*FROM online_store.users WHERE email='${email}'`;
+    const userAuth = `SELECT*FROM store.users WHERE email='${email}'`;
 
     db.query(userAuth ,(err, result)=>{
         if(err || result.length ===0){
@@ -28,7 +28,7 @@ exports.forgotPassword = (req,res) => {
             `
         }
      
-            return db.query(`UPDATE online_store.users SET reset_link='${accessToken}' WHERE email='${email}'` ,function(err, result){
+            return db.query(`UPDATE store.users SET reset_link='${accessToken}' WHERE email='${email}'` ,function(err, result){
                 if(err)
                 {
                     //res.status(404).json({ error: "Błąd link do restartu hasła !"})
@@ -57,12 +57,12 @@ exports.resetPassword = (req,res) => {
                     error: "Incorrect token"
                 })
             }
-            const userAuth = `SELECT*FROM online_store.users WHERE reset_link='${resetLink}'`
+            const userAuth = `SELECT*FROM store.users WHERE reset_link='${resetLink}'`
             db.query(userAuth ,(err, result)=>{
                 if(err || result.length ===0){
                     return  res.status(404).json({ error: "Nie ma takiego użytkownika!" });
                 }
-                return db.query(`UPDATE online_store.users SET password='${newPassword}' WHERE reset_link='${resetLink}'` ,function(err, result){
+                return db.query(`UPDATE store.users SET password='${newPassword}' WHERE reset_link='${resetLink}'` ,function(err, result){
                     if(err){console.log(err)
                     }else{
                     res.status(200).json({ message: "Hasło zostało zmienione" })}
